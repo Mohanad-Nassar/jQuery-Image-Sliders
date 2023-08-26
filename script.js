@@ -13,23 +13,45 @@ $(window).on('load', function () {
     $('#next').click(function () {
         counter++;
         if (counter === imgCount) {
+
+            $('#slider ul').clone().appendTo('#slider');
+            $('#slider ul').last().css('left', imgWidth + "px");
+
+            $('#slider ul').last().animate({ left: 0 }, 500, 'easeInQuad');
+            $('#slider ul').first().animate({ left: leftPosition }, 500, 'easeInQuad', function () {
+                $(this).remove();
+            });
+
+            leftPosition = `-${totalWidth}`;
+
+
             counter = 0
+        } else {
+            leftPosition = `-${counter * imgWidth}px`;
+            $('#slider ul').animate({ left: leftPosition }, 500, 'easeInQuad');
+
         }
-        leftPosition = `-${counter * imgWidth}px`;
-        $('#slider ul').animate({left: leftPosition}, 700, 'easeInQuad');
 
     });
 
     $('#previous').click(function () {
         counter--;
-        if (counter < 1) {
-            counter = imgCount-1;
+        if (counter < 0) {
+            counter = imgCount - 1;
+            $('#slider ul').clone().appendTo('#slider');
+            $('#slider ul').last().css('left', `-${totalWidth}`);
+            leftPosition = `-${counter * imgWidth}px`;
+            $('#slider ul').last().animate({ left: leftPosition }, 500, 'easeInQuad');
+            $('#slider ul').first().animate({ left: imgWidth + 'px' }, 500, 'easeInQuad', function () {
+                $(this).remove();
+            });
+
         }
-        leftPosition = `-${counter * imgWidth}px`;
-        $('#slider ul').animate({ left: leftPosition }, 700, 'easeInQuad');
-
+        else {
+            leftPosition = `-${counter * imgWidth}px`;
+            $('#slider ul').animate({ left: leftPosition }, 700, 'easeInQuad');
+        }
     });
-
 });
 
 
